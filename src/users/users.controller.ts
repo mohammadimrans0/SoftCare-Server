@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Body, Param, HttpCode, HttpStatus } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User, Profile, Role } from '@prisma/client';
+import { User, Profile} from '@prisma/client';
 
 @Controller('users')
 export class UsersController {
@@ -13,7 +13,7 @@ export class UsersController {
     @Body('password') password: string,
     @Body('role') role: string,
   ): Promise<User> {
-    return this.usersService.createUser(name, email, password, role);
+    return this.usersService.createUser(name, email, password);
   }
 
   @Get(':id')
@@ -46,6 +46,11 @@ export class UsersController {
     @Body('newPassword') newPassword: string,
   ): Promise<User> {
     return this.usersService.resetPassword(email, newPassword);
+  }
+
+  @Get('profile/:userId')
+  async getProfileByUserId(@Param('userId') userId: string): Promise<Profile | null> {
+    return this.usersService.getProfileByUserId(userId);
   }
 
   @Put('profile/:userId')

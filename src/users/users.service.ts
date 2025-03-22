@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { User, Profile, Role } from '@prisma/client';
+import { User, Profile, Role, Gender } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 
@@ -8,18 +8,23 @@ import * as bcrypt from 'bcryptjs';
 export class UsersService {
   constructor(private readonly prisma: PrismaService, private jwtService: JwtService) {}
 
-  async createUser(name: string, email: string, password: string, role: string): Promise<User> {
+  async createUser(name: string, email: string, password: string,): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userRole = role as Role;
+    // const userRole = role as Role;
     
     return this.prisma.user.create({
       data: {
         name,
         email,
         password: hashedPassword,
-        role: userRole,
         profile: {
-          create: {},
+          create: {
+            role: Role.Patient,
+            age: 0, 
+            gender: Gender.Male,
+            address: '', 
+            phone: '',
+          },
         },
       },
     });
@@ -53,6 +58,10 @@ export class UsersService {
       where: { email },
       data: { password: hashedPassword },
     });
+  }
+
+  async getProfileByUserId(userId: string): Promise<Profile | null> {
+    return this.prisma.profile.findUnique({ where: { userId } });
   }
 
   async updateProfile(userId: string, data: Partial<Profile>): Promise<Profile> {

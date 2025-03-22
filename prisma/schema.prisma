@@ -8,37 +8,73 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  email     String   @unique
-  password  String
-  role      Role
-  profile   Profile?
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String        @unique
+  password    String
+  profile     Profile?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Doctor      Doctor?
+  Appointment Appointment[]
+}
+
+model Profile {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String  @unique @db.ObjectId
+  user    User    @relation(fields: [userId], references: [id])
+  role    Role    @default(Patient)
+  age     Int?
+  gender  Gender?
+  address String?
+  phone   String? @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Profile {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @unique @db.ObjectId
-  user      User     @relation(fields: [userId], references: [id])
-  age       Int?
-  gender    Gender?
-  address   String?
-  phone     String?  @unique
+model Doctor {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String        @unique @db.ObjectId
+  user        User          @relation(fields: [userId], references: [id])
+  specialty   String
+  degree      String
+  experience  Int
+  phone       String?       @unique
+  address     String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Appointment Appointment[]
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Appointment {
+  id        String            @id @default(auto()) @map("_id") @db.ObjectId
+  patientId String            @db.ObjectId
+  patient   User              @relation(fields: [patientId], references: [id])
+  doctorId  String            @db.ObjectId
+  doctor    Doctor            @relation(fields: [doctorId], references: [id])
+  date      DateTime
+  schedule  String
+  status    AppointmentStatus @default(Pending)
+  notes     String?
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
 }
 
 enum Role {
   Patient
-  Doctor
+  Admin
 }
 
 enum Gender {
   Male
   Female
   Other
+}
+
+enum AppointmentStatus {
+  Pending
+  Confirmed
+  Completed
+  Canceled
 }
