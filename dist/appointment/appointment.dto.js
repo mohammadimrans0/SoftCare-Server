@@ -19,6 +19,14 @@ class CreateAppointmentDto {
     schedule;
     status = client_1.AppointmentStatus.Pending;
     notes;
+    constructor(date, patientId, doctorId, schedule, status, notes) {
+        this.date = date;
+        this.patientId = patientId;
+        this.doctorId = doctorId;
+        this.schedule = schedule;
+        this.status = status;
+        this.notes = notes;
+    }
 }
 exports.CreateAppointmentDto = CreateAppointmentDto;
 __decorate([

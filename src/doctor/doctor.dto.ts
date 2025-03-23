@@ -20,6 +20,15 @@ export class CreateDoctorDto {
   @IsOptional()
   @IsString()
   address?: string;
+
+  constructor(userId: string, specialty: string, degree: string, experience: number, phone?: string, address?: string) {
+      this.userId = userId;
+      this.specialty = specialty;
+      this.degree = degree;
+      this.experience = experience;
+      this.phone = phone;
+      this.address = address;
+    }
 }
 
 export class UpdateDoctorDto {
@@ -42,16 +51,4 @@ export class UpdateDoctorDto {
   @IsOptional()
   @IsString()
   address?: string;
-}
-
-export class DoctorDto {
-  id: string;
-  userId: string;
-  specialty: string;
-  degree: string;
-  experience: number;
-  phone?: string;
-  address?: string;
-  createdAt: Date;
-  updatedAt: Date;
 }

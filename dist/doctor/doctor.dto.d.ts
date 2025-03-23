@@ -5,6 +5,7 @@ export declare class CreateDoctorDto {
     experience: number;
     phone?: string;
     address?: string;
+    constructor(userId: string, specialty: string, degree: string, experience: number, phone?: string, address?: string);
 }
 export declare class UpdateDoctorDto {
     specialty?: string;
@@ -12,15 +13,4 @@ export declare class UpdateDoctorDto {
     experience?: number;
     phone?: string;
     address?: string;
-}
-export declare class DoctorDto {
-    id: string;
-    userId: string;
-    specialty: string;
-    degree: string;
-    experience: number;
-    phone?: string;
-    address?: string;
-    createdAt: Date;
-    updatedAt: Date;
 }
