@@ -1,6 +1,7 @@
-// src/appointments/dto/appointment.dto.ts
 import { IsEnum, IsNotEmpty, IsOptional, IsString, IsDateString } from 'class-validator';
-import { AppointmentStatus } from '@prisma/client';
+import { AppointmentStatus } from '@prisma/client'; 
+
+// console.log('AppointmentStatus:', AppointmentStatus);
 
 export class CreateAppointmentDto {
   @IsNotEmpty()
@@ -16,7 +17,8 @@ export class CreateAppointmentDto {
   @IsNotEmpty()
   schedule: string;
 
-  @IsEnum(AppointmentStatus)
+  // Ensure Prisma enum values are correctly used for validation
+  @IsEnum(AppointmentStatus, { message: 'Invalid status value' })
   @IsOptional()
   status: AppointmentStatus = AppointmentStatus.Pending;
 
@@ -24,7 +26,14 @@ export class CreateAppointmentDto {
   @IsOptional()
   notes?: string;
 
-  constructor(date: string, patientId: string, doctorId: string, schedule: string, status: AppointmentStatus, notes?: string) {
+  constructor(
+    date: string,
+    patientId: string,
+    doctorId: string,
+    schedule: string,
+    status: AppointmentStatus = AppointmentStatus.Pending, // Default to Pending
+    notes?: string,
+  ) {
     this.date = date;
     this.patientId = patientId;
     this.doctorId = doctorId;
@@ -35,7 +44,7 @@ export class CreateAppointmentDto {
 }
 
 export class UpdateAppointmentDto {
-  @IsEnum(AppointmentStatus)
+  @IsEnum(AppointmentStatus, { message: 'Invalid status value' })
   @IsOptional()
   status?: AppointmentStatus;
 
