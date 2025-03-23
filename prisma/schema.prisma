@@ -55,7 +55,7 @@ model Appointment {
   doctor    Doctor            @relation(fields: [doctorId], references: [id])
   date      DateTime
   schedule  String
-  status    AppointmentStatus @default(Pending)
+  status    String @default("Pending")
   notes     String?
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
@@ -70,11 +70,4 @@ enum Gender {
   Male
   Female
   Other
-}
-
-enum AppointmentStatus {
-  Pending
-  Confirmed
-  Completed
-  Canceled
 }

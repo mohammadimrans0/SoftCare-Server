@@ -11,16 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateAppointmentDto = exports.CreateAppointmentDto = void 0;
 const class_validator_1 = require("class-validator");
-const client_1 = require("@prisma/client");
-console.log('AppointmentStatus:', client_1.AppointmentStatus);
 class CreateAppointmentDto {
     patientId;
     doctorId;
     date;
     schedule;
-    status = client_1.AppointmentStatus.Pending;
+    status = "Pending";
     notes;
-    constructor(date, patientId, doctorId, schedule, status = client_1.AppointmentStatus.Pending, notes) {
+    constructor(date, patientId, doctorId, schedule, status = "Pending", notes) {
         this.date = date;
         this.patientId = patientId;
         this.doctorId = doctorId;
@@ -48,7 +46,7 @@ __decorate([
     __metadata("design:type", String)
 ], CreateAppointmentDto.prototype, "schedule", void 0);
 __decorate([
-    (0, class_validator_1.IsEnum)(client_1.AppointmentStatus, { message: 'Invalid status value' }),
+    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateAppointmentDto.prototype, "status", void 0);
@@ -63,7 +61,7 @@ class UpdateAppointmentDto {
 }
 exports.UpdateAppointmentDto = UpdateAppointmentDto;
 __decorate([
-    (0, class_validator_1.IsEnum)(client_1.AppointmentStatus, { message: 'Invalid status value' }),
+    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], UpdateAppointmentDto.prototype, "status", void 0);
